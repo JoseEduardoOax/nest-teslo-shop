@@ -1,0 +1,78 @@
+### RESTABLECER DATOS BD
+
+GET {{BASE_URL}}api/seed HTTP/1.1
+
+
+### Registrar usuario
+
+POST {{BASE_URL}}api/auth/register HTTP/1.1
+
+{
+  "email": "test3@google.com",
+  "fullName": "Jose Eduardo",
+  "password": "Abc123"
+}
+
+
+### Login usuario
+
+POST {{BASE_URL}}api/auth/login HTTP/1.1
+
+{
+  "email": "test1@google.com",
+  "password": "Abc123"
+}
+
+> {%
+  const token = response.body.token;
+  client.global.set('TOKEN_USER', token);
+%}
+
+
+### GET PRODUCTS
+
+GET {{BASE_URL}}api/products?limit=9&offset=0&gender=men HTTP/1.1
+Authorization: Bearer {{TOKEN_USER}}
+
+> {%
+  //var fs = require('fs');
+  //fs.writeFileSync('response.json', response.body);
+%}
+
+
+### 
+
+@id_producto = fc280321-039f-4575-9255-a9798d78e2c2
+
+
+### Get Producto By Id
+
+GET {{BASE_URL}}api/products/{{id_producto}} HTTP/1.1
+
+
+### Actualizar Producto
+
+PATCH {{BASE_URL}}api/products/{{id_producto}} HTTP/1.1
+Authorization: Bearer {{TOKEN_USER}}
+
+{
+  "tags": [
+    "shirt",
+    "racer",
+    "pepe"
+  ]
+}
+
+
+### Subir Imagen
+
+POST {{BASE_URL}}api/files/product HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary{{$timestamp}}
+
+------WebKitFormBoundary{{$timestamp}}
+Content-Disposition: form-data; name="file"; filename="mens_1.jpeg"
+Content-Type: image/jpeg
+
+< /home/eduardo/Angular/imagenes/mens_1.jpeg
+
+------WebKitFormBoundary{{$timestamp}}--
